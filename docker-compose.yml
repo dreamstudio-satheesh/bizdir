@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: business_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: business_directory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: strongpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: business_api
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:strongpassword@postgres:5432/business_directory
+
+volumes:
+  postgres_data:
