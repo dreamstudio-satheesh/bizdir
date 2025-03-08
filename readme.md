@@ -115,5 +115,8 @@ print("✅ Businesses inserted successfully.")
 ## Contributing
 Feel free to submit issues, suggestions, or pull requests to enhance the project!
 
+
 🚀 **Happy coding!**
+
+
 
