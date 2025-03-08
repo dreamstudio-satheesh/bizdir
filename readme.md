@@ -82,7 +82,7 @@ cursor = db.cursor()
 
 # Example data
 businesses = [
-    ("DreamCoderZ", "Software development specializing in AI."),
+    ("Dream CoderZ", "Software development specializing in AI."),
     ("GreenMart", "Organic store with home delivery.")
 ]
 
