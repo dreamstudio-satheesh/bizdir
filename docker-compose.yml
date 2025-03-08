@@ -26,7 +26,7 @@ services:
       DATABASE_URL: postgresql://postgres:strongpassword@postgres:5432/business_directory
     volumes:
       - ./app:/app  # Mounts 'app' folder inside the container
-    command: ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 volumes:
   postgres_data:
