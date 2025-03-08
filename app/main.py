@@ -1,3 +1,4 @@
+import logging
 from fastapi import FastAPI, HTTPException
 import psycopg2
 from sentence_transformers import SentenceTransformer
