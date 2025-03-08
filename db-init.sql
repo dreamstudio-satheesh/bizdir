@@ -1,6 +1,7 @@
 -- Enable the pgvector extension
 CREATE EXTENSION IF NOT EXISTS vector;
 
+-- Step 1: Create the businesses table without "ON UPDATE CURRENT_TIMESTAMP"
 CREATE TABLE IF NOT EXISTS businesses (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(255) NOT NULL,
@@ -13,8 +14,25 @@ CREATE TABLE IF NOT EXISTS businesses (
     revenue DECIMAL(15,2),
     company_size VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Step 2: Create a function to update "updated_at" automatically
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Step 3: Create a trigger to call the function before updates
+CREATE TRIGGER trigger_update_updated_at
+BEFORE UPDATE ON businesses
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+
 
 CREATE TABLE IF NOT EXISTS business_meta (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
