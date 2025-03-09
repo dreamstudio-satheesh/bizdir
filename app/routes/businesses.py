@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Business
+from pydantic import BaseModel
 import logging
 
 # Configure logging
@@ -9,14 +10,20 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 router = APIRouter()
 
+# ✅ Define a Pydantic model for request validation
+class BusinessCreate(BaseModel):
+    name: str
+    description: str
+
 @router.post("/add-business")
-def add_business(name: str, description: str, db: Session = Depends(get_db)):
+def add_business(business: BusinessCreate, db: Session = Depends(get_db)):
     """ Adds a business to the database """
-    new_business = Business(name=name, description=description)
+    new_business = Business(name=business.name, description=business.description)
     db.add(new_business)
     db.commit()
     db.refresh(new_business)
     return {"message": "Business added successfully", "business_id": new_business.id}
+
 
 @router.put("/{business_id}")
 def update_business(business_id: int, name: str = None, description: str = None, db: Session = Depends(get_db)):
