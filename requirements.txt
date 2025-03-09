@@ -6,3 +6,4 @@ faiss-cpu==1.7.4        # FAISS for fast vector search
 pgvector==0.2.2         # PostgreSQL vector extension
 sentence-transformers==2.2.2  # Pretrained text embeddings
 numpy==1.24.3           # Required for cosine similarity
+pydantic-settings==2.0.3  # Fix import issue in Pydantic 2+
