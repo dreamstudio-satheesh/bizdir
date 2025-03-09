@@ -14,9 +14,9 @@ COPY . .
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # ✅ Ensure Composer runs inside the container and installs dependencies
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress
+#  RUN composer install --no-dev --prefer-dist --no-interaction --no-progress
 
 # ✅ Set correct permissions for Laravel storage & cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+#  RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-CMD ["php-fpm"]
+#  CMD ["php-fpm"]
