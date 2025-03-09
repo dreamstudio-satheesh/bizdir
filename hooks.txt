@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Set the project directory where Docker Compose is located
+TARGET_DIR="/home/projects/bizdir-app"
+GIT_REPO="/home/projects/bizdir.git"
+
+echo "🚀 Deploying Business Directory to $TARGET_DIR"
+
+# Ensure the target directory exists
+if [ ! -d "$TARGET_DIR" ]; then
+    echo "❌ Target directory $TARGET_DIR does not exist!"
+    exit 1
+fi
+
+# Navigate to the target directory
+cd "$TARGET_DIR" || exit
+
+# Checkout the latest code from the bare repo (force update)
+git --work-tree="$TARGET_DIR" --git-dir="$GIT_REPO" checkout -f 
+
+# Ensure correct permissions
+chown -R www-data:www-data "$TARGET_DIR"
+
+# Restart Docker containers without rebuilding
+echo "🔄 Restarting Docker containers..."
+docker compose stop
+docker compose up -d
+
+echo "✅ Deployment completed successfully!"
+
+# chmod +x /home/projects/bizdir.git/hooks/post-receive
