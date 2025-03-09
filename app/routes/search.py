@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Business, BusinessEmbedding, BusinessLocation, BusinessTag
-from app.config import embedding_model  # Use preloaded model
+from config import embedding_model  # Use preloaded model
 import numpy as np
 import json
 
