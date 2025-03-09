@@ -34,7 +34,7 @@ services:
       context: ./laravel
       dockerfile: Dockerfile
     container_name: business_laravel
-    restart: always
+    # restart: always
     depends_on:
       - postgres
       - app
