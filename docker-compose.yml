@@ -34,7 +34,7 @@ services:
       context: ./laravel
       dockerfile: Dockerfile
     container_name: business_laravel
-    # restart: always
+    restart: always
     depends_on:
       - postgres
       - app
@@ -52,7 +52,7 @@ services:
     volumes:
       - ./laravel:/var/www/html
     working_dir: /var/www/html
-    # command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
+    command: ["php-fpm"]
     ports:
       - "9000:9000"
 
