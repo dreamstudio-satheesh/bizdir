@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models import Business, BusinessMeta, BusinessOwner, BusinessLocation, BusinessTag, BusinessEmbedding
-from app.config import embedding_model  # Use preloaded model
+from database import get_db
+from models import Business, BusinessMeta, BusinessOwner, BusinessLocation, BusinessTag, BusinessEmbedding
+from config import embedding_model  # Use preloaded model
 from pydantic import BaseModel
 import json
 import logging
