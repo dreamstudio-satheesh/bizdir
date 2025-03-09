@@ -1,23 +1,33 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sentence_transformers import SentenceTransformer
-import numpy as np
-import json
 from app.database import get_db
 from app.models import Business, BusinessEmbedding
+from app.config import embedding_model  # Use preloaded model
+import numpy as np
+import json
 
-router = APIRouter(prefix="/search", tags=["Search"])
-model = SentenceTransformer("all-MiniLM-L6-v2")
+router = APIRouter()
 
-@router.get("/")
-def search_business(query: str, db: Session = Depends(get_db)):
-    query_vector = model.encode(query).tolist()
-    businesses = db.query(Business, BusinessEmbedding).join(BusinessEmbedding, Business.id == BusinessEmbedding.business_id).all()
+@router.get("/search")
+def search_businesses(query: str, db: Session = Depends(get_db)):
+    """ Search businesses using vector embeddings """
+    query_vector = embedding_model.encode(query).tolist()
+
+    businesses = db.query(BusinessEmbedding).all()
+    if not businesses:
+        raise HTTPException(status_code=404, detail="No businesses found")
 
     scores = []
-    for business, embedding in businesses:
-        similarity = np.dot(query_vector, json.loads(embedding.embedding_vector))
-        scores.append((business.id, business.name, business.description, similarity))
+    for business in businesses:
+        similarity_score = np.dot(query_vector, json.loads(business.embedding_vector))
+        scores.append((business.business_id, similarity_score))
 
-    scores.sort(key=lambda x: x[3], reverse=True)
-    return {"results": [{"id": x[0], "name": x[1], "description": x[2], "score": x[3]} for x in scores[:5]]}
+    scores.sort(key=lambda x: x[1], reverse=True)
+
+    results = []
+    for business_id, score in scores[:5]:  # Return top 5 results
+        business = db.query(Business).filter(Business.id == business_id).first()
+        if business:
+            results.append({"id": business.id, "name": business.name, "description": business.description, "score": score})
+
+    return {"results": results}
