@@ -1,5 +1,6 @@
 fastapi==0.103.1         # Web framework
 uvicorn==0.23.2         # ASGI server
+sqlalchemy==2.0.38
 psycopg2-binary==2.9.9  # PostgreSQL connector
 faiss-cpu==1.7.4        # FAISS for fast vector search
 pgvector==0.2.2         # PostgreSQL vector extension
