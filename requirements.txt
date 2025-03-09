@@ -1,9 +1,10 @@
-fastapi==0.103.1         # Web framework
-uvicorn==0.23.2         # ASGI server
+fastapi==0.103.1
+uvicorn==0.23.2
 sqlalchemy==2.0.38
-psycopg2-binary==2.9.9  # PostgreSQL connector
-faiss-cpu==1.7.4        # FAISS for fast vector search
-pgvector==0.2.2         # PostgreSQL vector extension
-sentence-transformers==2.2.2  # Pretrained text embeddings
-numpy==1.24.3           # Required for cosine similarity
-pydantic-settings==2.0.3  # Fix import issue in Pydantic 2+
+psycopg2-binary==2.9.9
+faiss-cpu==1.7.4
+pgvector==0.2.2
+sentence-transformers==2.2.2
+numpy==1.24.3
+pydantic-settings==2.0.3
+huggingface_hub==0.15.1 
