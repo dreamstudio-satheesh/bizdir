@@ -40,5 +40,3 @@ docker version
 ```sh
 docker compose version
 ```
-
-thanks
