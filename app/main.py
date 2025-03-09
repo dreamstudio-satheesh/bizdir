@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import businesses, search
+from routes import businesses, search
 from database import engine, Base
 
 # Initialize FastAPI
