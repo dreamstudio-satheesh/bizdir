@@ -1,32 +1,18 @@
-from fastapi import FastAPI, HTTPException
-import psycopg2
-from sentence_transformers import SentenceTransformer
-import numpy as np
-import json
-import logging
+from fastapi import FastAPI
+from app.routers import businesses, search
+from app.database import engine, Base
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
+# Initialize FastAPI
 app = FastAPI()
 
-# Load the text embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+# Create database tables if they don't exist
+Base.metadata.create_all(bind=engine)
 
-# PostgreSQL connection settings
-DB_CONFIG = {
-    "dbname": "business_directory",
-    "user": "postgres",
-    "password": "strongpassword",
-    "host": "postgres",  # Docker service name
-    "port": "5432",
-}
+# Register routers
+app.include_router(businesses.router, prefix="/api", tags=["Businesses"])
+app.include_router(search.router, prefix="/api", tags=["Search"])
 
-# Initialize database connection
-def get_db_connection():
-    try:
-        conn = psycopg2.connect(**DB_CONFIG)
-        return conn
-    except Exception as e:
-        logging.error(f"❌ Database connection failed: {e}")
-        return None
+@app.get("/health")
+def health_check():
+    """ Health check endpoint """
+    return {"status": "ok", "database": "connected"}
